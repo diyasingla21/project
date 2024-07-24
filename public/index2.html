@@ -1,0 +1,167 @@
+<html>
+  <head>
+    <title>document</title>
+    
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+    <script>
+
+  $(document).ready(function(){
+       $("#signup").click(function(){
+        let obj={
+          type:"get",
+          url:"/signup-process",
+          data:{
+            txtEmail:$("#txtEmail").val(),
+            txtPwd:$("#txtPwd").val(),
+            combo:$("#combo").val()
+          }
+        }
+        $.ajax(obj).done(function(resp){
+          $("#msgSignup").html(resp);
+        }).fail(function(err)
+       {
+        alert(err.statusText);
+       })
+      })
+  $("#login").click(function(){
+    let obj={
+      type:"get",
+      url:"/login-process",
+      data:{
+        txtEmaill:$("#txtEmaill").val(),
+        txtpwd:$("#txtpwd").val(),
+      }
+    }
+    $.ajax(obj).done(function(resp){
+      alert(resp);
+    }).fail(function(err)
+   {
+    alert(err.statusText);
+   })
+  })
+
+  $("#btninfl").click(function(){
+
+    let obj={
+    type:"get",
+    url:"/openinfl"
+   }
+  })
+   $.ajax(obj).done(function(resp)
+   {
+     //alert("failed to connect");
+   })
+
+   $("#btnadmin").click(function(){
+
+      let obj={
+         type:"get",
+        url:"/openadmin"
+        }
+      })
+  $.ajax(obj).done(function(resp)
+ {
+  alert("failed to connect");
+     })
+
+      $("#btnadmin").click(function(){
+
+      let obj={
+      type:"get",
+      url:"/openadmin"
+  }
+   })
+        $.ajax(obj).done(function(resp)
+   {
+         alert("failed to connect");
+  })
+  })
+  
+  </script>
+  </head>
+
+  <body>
+    <center>
+  <button type="button" class="btn btn-outline-primary"  data-bs-toggle="modal" data-bs-target="#signupModal" style="margin-top: 20px;">sign up</button>
+<button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#modalLogin" style="margin-top: 20px;">login</button>
+<a href="/openinfl">
+  <button type="button" class="btn btn-outline-success"  id="btninfl"style="margin-top: 20px;">influencer</button>
+</a>
+<a href="/openadmin">
+  <button type="button" class="btn btn-outline-success"  id="btnadmin"style="margin-top: 20px;">admin</button>
+</a>
+<a href="/openinflu">
+  <button type="button" class="btn btn-outline-success"  id="btninflu"style="margin-top: 20px;">find influ</button>
+</a>
+
+
+
+<!---------------------------------------- Modal login---------------------------------------------------->
+<div id="modalLogin" class="modal fade" tabindex="-1">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">LOGIN</h5>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+        <p>
+          <div class="form-floating mb-3">
+              <input type="email" class="form-control" id="txtEmaill" name="txtEmaill" placeholder="name@example.com">
+              <label for="floatingInput">Email address</label>
+            </div>
+            <div class="form-floating">
+              <input type="password" class="form-control" id="txtpwd" name="txtpwd" placeholder="Password">
+              <label for="floatingPassword">Password</label>
+            </div>
+        </p>
+      </div>
+      <div class="modal-footer">
+        
+        <button type="button" class="btn btn-primary" id="login">login</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+<!----------------------------------------Modal signup-------------------------------------------------------- -->
+<div class="modal fade" id="signupModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h1 class="modal-title fs-5" id="exampleModalLabel">SIGN UP</h1>
+        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+      </div>
+      <div class="modal-body">
+          <form>
+              <div class="mb-3">
+                <label for="exampleInputEmail1" class="form-label">Email</label>
+                <input type="email" class="form-control" name="txtEmail" id="txtEmail" aria-describedby="emailHelp">
+               
+              </div>
+              <div class="mb-3">
+                <label for="exampleInputPassword1" class="form-label">Password</label>
+                <input type="password" class="form-control" name="txtPwd" id="txtPwd">
+              </div>
+                <select class="form-select" aria-label="Default select example" id="combo">
+                <option selected >select</option>
+                <option value="client">client</option>
+                <option value="influencer">influencer</option>
+              </select>
+              </div>
+              <div class="mb-3">
+              <button type="button" class="btn btn-primary" id="signup">Sign up</button>
+              </div>
+            </form>
+      </div>
+      
+    </div>
+  </div>
+</div>
+</center>
+</body>

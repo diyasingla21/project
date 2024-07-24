@@ -1,0 +1,262 @@
+<html>
+
+<head>
+  <title>document</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"></script>
+    
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+    integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+  <script>
+
+    function logout() {
+      localStorage.removeItem("active");
+      location.href = "index.html";
+    }
+    $(document).ready(function () {
+      $("#event").click(function () {
+        let obj = {
+          type: "get",
+          url: "/event-process",
+          data: {
+            bemail: $("#bemail").val(),
+            btitle: $("#btitle").val(),
+            bdob: $("#bdob").val(),
+            btime: $("#btime").val(),
+            bcity: $("#bcity").val(),
+            bvenue: $("#bvenue").val(),
+          }
+        }
+        $.ajax(obj).done(function (resp) {
+          $("#msgevent").html(resp);
+        }).fail(function (err) {
+          alert(err.statusText);
+        })
+      })
+
+      $("#scon").keyup(function () {
+        var snew = $("#snew").val();
+        var scon = $("#scon").val();
+
+        if (scon != snew) {
+          $("#errconfirmpwd").html("** password not match");
+          $("#errconfirmpwd").css('color', 'red');
+        }
+        else {
+          $("#supdate").prop("disabled", false);
+          $("#errconfirmpwd").html('');
+        }
+      })
+
+      $("#supdate").click(function () {
+        let obj = {
+          type: "get",
+          url: "/settings-update",
+          data: {
+            scon: $("#scon").val(),
+            semail: $("#semail").val(),
+            old: $("#old").val(),
+            snew: $("#snew").val()
+          }
+        }
+        $.ajax(obj).done(function (resp) {
+          alert(resp);
+        }).fail(function (err) {
+          alert("failed");
+        })
+      })
+    })
+  </script>
+</head>
+
+
+
+
+<body>
+  <nav class="navbar navbar-expand-lg bg-body-tertiary fixed-top">
+    <div class="container-fluid" style="background-color:74c69d;">
+      <a class="navbar-brand" href="#" id="logo"><img src="pics/promologo.jpg" alt="" height="50px" width="150px"></a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span><i class="fa-solid fa-bars" style="color:aliceblue; font-size: 10px;"></i></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="#"
+              style="color:354f52; font-size:30px; margin-left: 90px; font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;">PROMO.COM</a>
+          </li>
+        </ul>
+        <a href="index.html">
+          <input type="button" class="btn btn-outline-primary" value="logout" id="logout"
+            style="margin-left:5px; color:black;"></input></a>
+        </form>
+      </div>
+    </div>
+  </nav>
+  <br><br><br><br>
+  <center>
+    <h3>WELCOME PAGE</h3>
+  </center><br>
+  <div class="container">
+    <div class="row">
+      <div class="col-md-3">
+        <div class="card" style="background-color: fae1dd;">
+          <img src="pics/profile.jpg" class="card-img-top" alt="..." />
+          <div class="card-body">
+            <h5 class="card-title">Profile:-</h5>
+            <p class="card-text">
+              Know more about me by clicking on profile button.It contains some of the important information that you
+              may require.
+            </p>
+            <a href="/open-inf-profile" class="btn btn-primary">profile</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card" style="background-color: fae1dd;">
+          <img src="pics/bookings.jpg" class="card-img-top" alt="..." />
+          <div class="card-body">
+            <h5 class="card-title">Bookings:-</h5>
+            <p class="card-text">
+              Know my booked events by clicking on booking button.I may not be available on these dates.For further
+              information contact my manager.
+            </p>
+            <button type="button" class="btn btn-primary" data-bs-toggle="modal"
+              data-bs-target="#bookingModal">bookings</button>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card" style="background-color: fae1dd;">
+          <img src="pics/settings.jpg" class="card-img-top" alt="..." />
+          <div class="card-body">
+            <h5 class="card-title">Settings:-</h5>
+            <p class="card-text">
+              You can make changes by clicking on settings button.In case you wanna change your password here's the
+              solution.
+            </p>
+            <a href="#" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#settingModal">settings</a>
+          </div>
+        </div>
+      </div>
+      <div class="col-md-3">
+        <div class="card" style="background-color: fae1dd;">
+          <img src="pics/login.png" class="card-img-top" alt="..." />
+          <div class="card-body">
+            <h5 class="card-title">Event Manager:-</h5>
+            <p class="card-text">
+              Manage your events by clicking on manage button.let your events display on one slide for better schedule
+              managing.
+            </p>
+            <a href="/open-event-manager" class="btn btn-primary">manage</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+
+
+
+
+  <!-----------------------------------booking modal------------------------------------------->
+  <div id="bookingModal" class="modal fade" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Booked events</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <div class="container-fluid">
+            <div class="row">
+              <div class="mb-3"><class="form-label">Email address
+                  <input type="email" class="form-control" id="bemail" name="bemail" aria-describedby="emailHelp"></div>
+              <div class="row">
+                <div class="mb-3"><class="form-label">location of event</label>
+                    <input type="text" class="form-control" id="bcity" name="bcity" aria-describedby="emailHelp"></div>
+              </div>
+              <div class="row">
+                <div class="col-md-4"><class="form-label">title of event
+                    <input type="text" class="form-control" id="btitle" name="btitle" aria-describedby="emailHelp">
+                </div>
+              </div><br>
+              <div class="row">
+                <div class="col-md-4"><class="form-label">date
+                    <input type="date" class="form-control" id="bdob" name="bdob"></div>
+              </div>
+              <br><br><br>
+              <div class="row">
+                <div class="col-md-5">Select event time:
+                  <input type="time" id="btime" name="btime">
+                </div><br><br>
+              </div><br>
+              <div class="row">
+                <div class="col-md-4">
+                  <class="form-label">venue
+                    <input type="text" class="form-control" id="bvenue" name="bvenue" aria-describedby="emailHelp">
+                </div>
+              </div>
+              <br><br>
+              <div class="row">
+                <div class="md-4">
+                  <center> <button type="button" class="btn btn-outline-info" id="event">post event</button></center>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  </div>
+
+
+
+  <!-----------------------------------settings modal------------------------------------------->
+  <div id="settingModal" class="modal fade" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">settings</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="form-floating mb-3">
+              <input type="email" class="form-control" id="semail" name="semail" placeholder="name@example.com">
+              <label for="floatingInput">Email address</label>
+            </div>
+            <div class="form-floating">
+              <input type="password" class="form-control" id="old" name="old" placeholder="Old Password">
+              <label for="floatingPassword"> Old Password</label>
+            </div><br>
+            <div class="form-floating">
+              <input type="password" class="form-control" id="snew" name="snew" placeholder=" New Password">
+              <label for="floatingPassword"> New Password</label>
+            </div><br>
+            <div class="form-floating">
+              <input type="password" class="form-control" id="scon" name="scon" placeholder=" Confirm Password">
+              <label for="floatingPassword"> Confirm Password</label>
+
+            </div>
+            <div class="modal-footer">
+              <button type="button" class="btn btn-primary" id="supdate" name="supdate" disabled>update</button>
+            </div>
+
+          </form>
+        </div>
+
+      </div>
+    </div>
+  </div>
+</body>
+
+</html>

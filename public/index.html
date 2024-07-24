@@ -1,0 +1,360 @@
+<html>
+
+<head>
+  <title>document</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+    integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+  <script>
+
+    $(document).ready(function () {
+
+      $("#txtPwd").keydown(function () {
+
+        var regularExpression = /^(?=(.*[a-z]){3,})(?=(.*[A-Z]){2,})(?=(.*[0-9]){2,})(?=(.*[!@#$%^&*()\-__+.]){1,}).{8,}$/;
+        let pwd = $(this).val();
+
+        if (regularExpression.test(pwd) == true)
+          $("#errPwd").html("okay!! It's a strong password");
+        else
+          $("#errPwd").html("weak password");
+      });
+
+      $("#txtEmail").blur(function () {
+
+        var pattern = /^\w+@[a-zA-Z_]+?\.[a-zA-Z]{2,3}$/;
+        let email = $(this).val();
+
+        if (pattern.test(email) == true)
+          $("#erremail").html("okay!!");
+        else
+          $("#erremail").html("check your email id pls");
+      });
+
+      //   $("#combo").keydown(function(){
+
+      //   if(combo != null){
+      //     $("#err").html("choose");
+
+      //   }
+      //   else{
+      //     $("#signup").prop("disabled",false);
+      //     $("#err").html('');
+      //   }
+      // })
+
+
+      $("#signup").click(function () {
+        let obj = {
+          type: "get",
+          url: "/signup-process",
+          data: {
+            txtEmail: $("#txtEmail").val(),
+            txtPwd: $("#txtPwd").val(),
+            combo: $("#combo").val()
+          }
+        }
+        $.ajax(obj).done(function (resp) {
+          $("#msgSignup").html(resp);
+        }).fail(function (err) {
+          alert(err.statusText);
+        })
+      })
+
+
+      $("#login").click(function () {
+
+        let obj = {
+          type: "get",
+          url: "/login-process",
+          data: {
+            txtEmaill: $("#txtEmaill").val(),
+            txtpwd: $("#txtpwd").val(),
+          }
+        }
+        $.ajax(obj).done(function (resp) {
+          alert(resp);
+          if (resp === "influencer") {
+            location.href = "infl-dash.html"
+            localStorage.setItem("activeuser", $("#txtEmaill").val());
+          }
+
+          else if (resp === "client") {
+            location.href = "client-dash.html";
+            localStorage.setItem("activeuser", $("#txtEmaill").val());
+          }
+
+          else
+            alert(resp);
+
+        }).fail(function (err) {
+          alert(err.statusText);
+        })
+      })
+
+      // Forgot Password
+
+      $("#forgotpwd").click(function () {
+        alert();
+        let obj = {
+          type: "get",
+          url: "/forgot-password",
+          data: {
+            txtEmaill: $("#txtEmaill").val()
+          }
+        }
+        $.ajax(obj).done(function (resp) {
+          alert(resp);
+        }).fail(function (err) {
+          alert(err.statusText);
+        })
+      })
+
+      $("#btninfl").click(function () {
+
+        let obj = {
+          type: "get",
+          url: "/openinfl"
+        }
+      })
+      $.ajax(obj).done(function (resp) {
+        //alert("failed to connect");
+      })
+
+
+
+      $("#btnadmin").click(function () {
+
+        let obj = {
+          type: "get",
+          url: "/openadmin"
+        }
+      })
+      $.ajax(obj).done(function (resp) {
+        alert("failed to connect");
+      })
+
+      $("#btnadmin").click(function () {
+
+        let obj = {
+          type: "get",
+          url: "/openadmin"
+        }
+      })
+      $.ajax(obj).done(function (resp) {
+        alert("failed to connect");
+      })
+  })
+
+  </script>
+</head>
+
+<body>
+
+
+  <nav class="navbar navbar-expand-lg bg-body-tertiary fixed-top">
+    <div class="container-fluid" style="background-color:74c69d;">
+      <a class="navbar-brand" href="#" id="logo"><img src="pics/promologo.jpg" alt="" height="50px" width="150px"></a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span><i class="fa-solid fa-bars" style="color:aliceblue; font-size: 10px;"></i></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="#"
+              style="color:354f52; font-size:30px; margin-left: 90px; font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;">PROMO.COM</a>
+          </li>
+        </ul>
+        <input type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#signupModal"
+          value="Signup" style="margin-left:5px; color:black;"></input>
+        <button type="button" class="btn btn-outline-primary" data-bs-toggle="modal" data-bs-target="#modalLogin"
+          value="login" style="margin-left:5px; color:black;">login</button>
+        <a href="#services">
+          <input type="button" class="btn btn-outline-primary" value="Our Services"
+            style="margin-left:5px; color:black;"></input></a>
+        <a href="#team">
+          <input type="button" class="btn btn-outline-primary" value="Our Team"
+            style="margin-left:5px; color:black;"></input></a>
+        <a href="#reach">
+          <input type="button" class="btn btn-outline-primary" value="Reach Us"
+            style="margin-left:5px; color:black;"></input></a>
+        </form>
+      </div>
+    </div>
+  </nav>
+
+  <div id="carouselExampleCaptions" class="carousel slide" data-bs-ride="carousel">
+    <div class="carousel-inner">
+      <div class="carousel-item active" data-bs-interval="100">
+        <img src="pics/carousel.webp" class="mh-100" style="width: 1800px; height: 700px;" alt="...">
+      </div>
+    </div><br>
+
+
+    <div id="services" style="background-color:74c69d; font-size: 30px; color:aliceblue">
+      <center>Our Services</center>
+    </div><br>
+
+    <div class="row text-center">
+      <!-- Team item-->
+      <div class="col-xl-3 col-sm-6 mb-5">
+        <div class="rounded shadow-sm py-5 px-4" style="background-color:fae1dd;"><img src="pics/collaboration.png"
+            alt="" width="100" class="img-fluid rounded-circle mb-3 img-thumbnail shadow-sm">
+          <h5 class="mb-1">COLLABORATION</h5><span style="color:67382d;">Lets open to each other's ideas and take
+            benefit from each other's perspectives in an open way.</span>
+        </div>
+      </div>
+      <!-- End-->
+
+      <!-- Team item-->
+      <div class="col-xl-3 col-sm-6 mb-5">
+        <div class="rounded shadow-sm py-5 px-4" style="background-color:fae1dd;"><img src="pics/meet.jpeg" alt=""
+            width="100" class="img-fluid rounded-circle mb-3 img-thumbnail shadow-sm">
+          <h5 class="mb-0">MEET AND GREET</h5><span style="color:67382d;">The true adventurer goes forth aimless and
+            uncalculating to meet and greet unknown fate.</span>
+        </div>
+      </div>
+      <!-- End-->
+
+      <!-- Team item-->
+      <div class="col-xl-3 col-sm-6 mb-5">
+        <div class="rounded shadow-sm py-5 px-4" style="background-color:fae1dd;"><img src="pics/influencer.jpg" alt=""
+            width="100" class="img-fluid rounded-circle mb-3 img-thumbnail shadow-sm">
+          <h5 class="mb-0">GET INFLUENCER</h5><span style="color:67382d;">Influencer marketing is the fastest-growing
+            online customer-acquisition channel and email marketing.</span>
+        </div>
+      </div>
+      <!-- End-->
+
+      <!-- Team item-->
+      <div class="col-xl-3 col-sm-6 mb-5">
+        <div class="rounded shadow-sm py-5 px-4" style="background-color:fae1dd;"><img src="pics/promotion.jpg" alt=""
+            width="100" class="img-fluid rounded-circle mb-3 img-thumbnail shadow-sm">
+          <h5 class="mb-0">PROMOTIONS</h5><span style="color:67382d;">Your promotion is a reflection of the great work
+            you have done.Congratulations on your well-deserved success!</span>
+        </div>
+      </div>
+      <!-- End-->
+    </div>
+  </div>
+  <div id="team" style="background-color:74c69d; font-size: 30px; color:aliceblue">
+    <center>Our Team</center>
+  </div><br>
+
+  <div class="row">
+    <div class="col-md-4" style="margin-left: 250px;">
+      <div class="card" style="background-color:fae1dd;">
+        <center> <img src="pics/sir.jpeg" height="40%" width="40%" alt="..." style="border-radius:50%"></center>
+        <div class="card-body">
+          <center>
+            <h5 class="card-title">Mr. RAJESH BANSAL<br>Author of Real Java<br>(Mentor)</h5>
+          </center>
+        </div>
+      </div>
+    </div>
+    <div class="col-md-4">
+      <div class="card" style="background-color: fae1dd;">
+        <center> <img src="pics/profile.jpg" height="40%" width="40%" alt="..." style="border-radius:50%"></center>
+        <div class="card-body">
+          <center>
+            <h5 class="card-title">Diya<br>Web Developer<br>(Fresher)</h5>
+        </div>
+      </div>
+    </div>
+  </div><br>
+  <div id="reach" style="background-color:74c69d; font-size: 30px; color:aliceblue">
+    <center>Reach Us</center>
+  </div><br>
+
+  <div style="background-color: fae1dd;">
+    <center>
+      <iframe
+        src="https://www.google.com/maps/embed?pb=!1m14!1m8!1m3!1d3447.8807331546304!2d74.9497532!3d30.2119513!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x391732a4f07278a9%3A0x4a0d6293513f98ce!2sBanglore%20Computer%20Education!5e0!3m2!1sen!2sin!4v1721069585153!5m2!1sen!2sin"
+        width="1000" height="450" style="border:0;" allowfullscreen="" loading="lazy"
+        referrerpolicy="no-referrer-when-downgrade"></iframe>
+    </center>
+  </div>
+
+  <div style="background-color:74c69d; font-size:x-small; color:aliceblue">
+    <center>copyright Promo Inc. All rights reserved </center>
+  </div>
+
+  <!---------------------------------------- Modal login---------------------------------------------------->
+  <div id="modalLogin" class="modal fade" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">LOGIN</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <p>
+          <div class="form-floating mb-3">
+            <input type="email" class="form-control" id="txtEmaill" name="txtEmaill" placeholder="name@example.com">
+            <label for="floatingInput">Email address</label>
+          </div>
+          <div class="form-floating">
+            <input type="password" class="form-control" id="txtpwd" name="txtpwd" placeholder="Password">
+            <label for="floatingPassword">Password</label>
+          </div><br>
+          <div><input type="button" class="btn btn-outline-primary" value="forget password?" id="forgotpwd"
+              style="margin-left:5px; color:black;"></input></a></div>
+          </p>
+        </div>
+        <div class="modal-footer">
+
+          <button type="button" class="btn btn-primary" id="login">login</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+
+
+
+  <!----------------------------------------Modal signup-------------------------------------------------------- -->
+  <div class="modal fade" id="signupModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">SIGN UP</h1>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          <form>
+            <div class="mb-3">
+              <label for="exampleInputEmail1" class="form-label">Email</label>
+              <input type="email" class="form-control" name="txtEmail" id="txtEmail" aria-describedby="emailHelp">
+              <span id="erremail">*</span>
+            </div>
+            <div class="mb-3">
+              <label for="exampleInputPassword1" class="form-label">Password</label>
+              <input type="password" class="form-control" name="txtPwd" id="txtPwd">
+              <span id="errPwd">*</span>
+            </div>
+            <select class="form-select" aria-label="Default select example" id="combo">
+              <option selected>select</option>
+              <option value="client">client</option>
+              <option value="influencer">influencer</option>
+            </select>
+            <span id="err">*</span>
+        </div>
+        <div class="mb-3">
+          <center>
+            <button type="button" class="btn btn-primary" id="signup">Sign up</button>
+          </center>
+        </div>
+        </form>
+      </div>
+
+    </div>
+  </div>
+  </div>
+  </center>
+</body>

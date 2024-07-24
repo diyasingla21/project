@@ -1,0 +1,191 @@
+<html>
+
+<head>
+  <title>document</title>
+
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
+    integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
+    integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz"
+    crossorigin="anonymous"></script>
+  <script src="https://code.jquery.com/jquery-3.7.1.min.js"
+    integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
+  <script>
+    function doPrev(fileCtrl, imgPrev) {
+      let [file] = fileCtrl.files
+      if (file) {
+        imgPrev.src = URL.createObjectURL(file)
+      }
+    }
+  </script>
+  <script>
+    $(document).ready(function () {
+
+      let active=localStorage.getItem("activeuser");
+       $("#iemail").val(active).prop("readonly",true);
+
+       let obj = {
+        type: "get",
+        url: "/check-influ-acc",
+        data: {
+          iemail: active
+        }
+      }
+      $.ajax(obj).done(function (jsonary) {
+        if (jsonary.length == 0) {
+          $("#iupdate").prop("disabled", true);
+          $("#isave").prop("disabled", false);
+        } else {
+          $("#iupdate").prop("disabled", false);
+          $("#isave").prop("disabled", true);
+        }
+      }).fail(function (err) {
+        alert(err.statusText);
+      })
+
+
+      $("#btnSearch").click(function () {
+        let obj = {
+          type: "get",
+          url: "/find-user-details",
+          data: {
+            iemail: $("#iemail").val()
+          }
+        }
+        $.ajax(obj).done(function (jsonAry) {
+          if (jsonAry.length == 0) {
+            alert("Invalid ID");
+            return;
+          }
+          //alert(JSON.stringify(jsonAry));
+          $("#iname").val(jsonAry[0].iname);
+          $("#icombo").val(jsonAry[0].gender);
+          $("#idob").val(jsonAry[0].dob);
+          $("#iadd").val(jsonAry[0].address);
+          $("#icity").val(jsonAry[0].city);
+          $("#icon").val(jsonAry[0].contact);
+          $("#ifield").val(jsonAry[0].fields);
+          $("#insta").val(jsonAry[0].insta);
+          $("#iface").val(jsonAry[0].fb);
+          $("#iyou").val(jsonAry[0].youtube);
+          $("#info").val(jsonAry[0].other);
+          $("#prev").prop("src", "uploads/" + jsonAry[0].picpath);
+          $("#hdn").val(jsonAry[0].picpath);
+
+        }).fail(function (err) {
+          alert(err.statusText);
+        })
+      });
+    })
+  </script>
+</head>
+
+<body style="margin-left: 230px; margin-top: 30px; font-size: 18px;">
+  <nav class="navbar navbar-expand-lg bg-body-tertiary fixed-top">
+    <div class="container-fluid" style="background-color:74c69d;">
+      <a class="navbar-brand" href="#" id="logo"><img src="pics/promologo.jpg" alt="" height="50px" width="150px" ></a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span><i class="fa-solid fa-bars" style="color:aliceblue; font-size: 10px;"></i></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="#" style="color:354f52; font-size:30px; margin-left: 90px; font-family:'Lucida Sans', 'Lucida Sans Regular', 'Lucida Grande', 'Lucida Sans Unicode', Geneva, Verdana, sans-serif;">PROMO.COM</a>
+          </li>
+        </ul>
+        </form>
+      </div>
+    </div>
+  </nav>
+  <br><br>
+  
+  <form class="row g-3" method="post" enctype="multipart/form-data">
+    <input type="hidden" name="hdn" id="hdn">
+      <h3>profile</h3>
+    <div class="col-md-3">
+      <label for="inputEmail4" class="form-label">Email</label>
+      <input type="email" class="form-control" id="iemail" name="iemail">
+      <br>
+    </div>
+    <div class="col-md-1">
+      <label for="inputPassword4" class="form-label">click to </label>
+      <button type="button" class="btn btn-outline-success" id="btnSearch">Search</button>
+    </div>
+    <div class="col-md-3">
+      <label for="inputPassword4" class="form-label">Name</label>
+      <input type="text" class="form-control" id="iname" name="iname" required>
+    </div>
+    <div class="col-md-3">
+      Profile Pic <input type="file" name="ppic" id="ppic" onchange="doPrev(this,prev);" required>
+      <br>
+      <img src="" id="prev" alt="" width="100" height="100">
+    </div>
+    <div class="col-md-4">
+      <class="form-label">Address
+        <input type="text" class="form-control" id="iadd" name="iadd" required>
+    </div>
+    <div class="col-md-3">
+      <class="form-label">gender
+        <select class="form-select" aria-label="Default select example" id="icombo" name="icombo">
+          <option selected>select</option>
+          <option value="male">male</option>
+          <option value="female">female</option>
+        </select>
+    </div>
+    <div class="col-md-2">
+      <class="form-label">date of birth
+        <input type="date" class="form-control" id="idob" name="idob">
+    </div>
+    <div class="col-md-4">
+      <label for="inputState" class="form-label">city</label>
+      <select id="icity" name="icity" class="form-select">
+        <option selected>Choose</option>
+        <option>bathinda</option>
+        <option>chandigarh</option>
+        <option>banglore</option>
+        <option>mumbai</option>
+        <option>delhi</option>
+      </select>
+    </div>
+    <div class="col-md-2">
+      <label for="inputZip" class="form-label">contact</label>
+      <input type="text" class="form-control" id="icon" name="icon">
+    </div>
+    <div class="col-md-4">
+      field <br>
+      <select multiple id="ifield" name="ifield">
+        <option value="gaming">gaming</option>
+        <option value="fitness">fitness</option>
+        <option value="vlogger">vlogger</option>
+        <option value="Beauty">beauty content</option>
+        <option value="fashion">fashion</option>
+        <option value="choreographer">choreographer</option>
+        <option value="codding">codding</option>
+        <option value="artist">artist</option>
+        <option value="singing">singing</option>
+      </select>
+      </label>
+    </div>
+    </div>
+    <div class="col-md-3">
+      instagram page
+      <input type="text" class="form-control" id="insta" name="insta">
+    </div>
+    <div class="col-md-3">
+      youtube channel
+      <input type="text" class="form-control" id="iyou" name="iyou">
+    </div>
+    <div class="col-md-3">
+      facebook id
+      <input type="text" class="form-control" id="iface" name="iface">
+    </div>
+    <div class="col-md-6">
+      other info
+      <input type="text" class="form-control" id="info" name="info">
+     </div>
+      <div class="col-md-12">
+        <button type="submit" class="btn btn-primary" formaction="/save-process" id="isave">Save</button>
+        <button type="submit" class="btn btn-primary" formaction="/profile-update" if="iupdate">update</button>
+      </div>
+  </form>
+</body>
